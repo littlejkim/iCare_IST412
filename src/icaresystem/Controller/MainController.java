@@ -19,6 +19,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
 
 /**
@@ -50,10 +51,20 @@ public class MainController {
         frame.getHome().getSubmit().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("autneticate");
+                System.out.println("authenticate");
                 
-                for(int i = 0; i < accountList.size(); i++) {
-                    if(accountList.get(i).getId().equals(frame.getHome().getId().getText()) && accountList.get(i).getPassword().equals(new String(frame.getHome().getPassword().getPassword()))) {
+                HashMap<String,String> login = new HashMap<>();
+                
+                for (int i = 0; i <accountList.size(); ++i)
+                {
+                    Account a = accountList.get(i);
+                    login.put(a.getId(),a.getPassword());
+                }    
+                 
+                String userName = frame.getHome().getId().getText();
+                String password = new String( frame.getHome().getPassword().getPassword());
+                
+                    if(login.get(userName).equals(password)) {
                         frame.getHome().getLoggedOn().setText("User is logged on");
                         frame.enableTabs(true);
                     } else {
@@ -61,7 +72,7 @@ public class MainController {
                         frame.enableTabs(false);
                     }
                     
-                }
+                
             }
         });
         
