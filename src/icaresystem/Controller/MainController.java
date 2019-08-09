@@ -10,6 +10,7 @@ import icaresystem.View.MainFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -27,13 +28,13 @@ public class MainController {
 
     Connection conn;
     Statement stat;
-
+    ArrayList<Account> accountList = null;
     AppointmentList appointmentList;
     PrescriptionList presList;
 
     MainFrame frame;
 
-    public MainController(String title) {
+    public MainController(String title) throws IOException, FileNotFoundException, ClassNotFoundException {
         // create main frame
         frame = new MainFrame(title);
 
@@ -41,31 +42,17 @@ public class MainController {
         //Create lists
         appointmentList = new AppointmentList();
         presList = new PrescriptionList();
-
+        AccountList list = new AccountList();
+        accountList = list.getAccountList();
 
         // authenticate id and password from database
         frame.getHome().getSubmit().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("autneticate");
-                ArrayList<Account> listOfAccounts = null;
-                try {
-                    FileInputStream fileIn = new FileInputStream("info.ser");
-                    ObjectInputStream in = new ObjectInputStream(fileIn);
-                    listOfAccounts = (ArrayList<Account>) in.readObject();
-                    in.close();
-                    fileIn.close();
-                    System.out.println("file opened");
-                } catch (IOException i) {
-                    i.printStackTrace();
-                    return;
-                } catch (ClassNotFoundException c) {
-                    frame.getHome().getLoggedOn().setText("user not found");
-                    c.printStackTrace();
-                    return;
-                }
-                for(int i = 0; i < listOfAccounts.size(); i++) {
-                    if(listOfAccounts.get(i).getId().equals(frame.getHome().getId().getText()) && listOfAccounts.get(i).getPassword().equals(new String(frame.getHome().getPassword().getPassword()))) {
+                
+                for(int i = 0; i < accountList.size(); i++) {
+                    if(accountList.get(i).getId().equals(frame.getHome().getId().getText()) && accountList.get(i).getPassword().equals(new String(frame.getHome().getPassword().getPassword()))) {
                         frame.getHome().getLoggedOn().setText("User is logged on");
                         frame.enableTabs(true);
                     } else {
@@ -84,8 +71,8 @@ public class MainController {
                 String id = frame.getHome().getId().getText();
                 String password = new String(frame.getHome().getPassword().getPassword());
                 Account newac = new Account(1, id, password);
-                AccountList listOfAccounts = new AccountList();
-                ArrayList<Account> list = listOfAccounts.getAccountList();
+  
+                ArrayList<Account> list = accountList;
                 list.add(newac);
                 try {
                     FileOutputStream fileOut = new FileOutputStream("info.ser");
@@ -105,172 +92,172 @@ public class MainController {
         });
 
 //        //Open Create/View/Edit Appointment Panels
-//        frame.getAppointment().getSelect().addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                //Open Create Panel
-//                if (frame.getAppointment().getCreate().isSelected()) {
-//                    frame.getAppointment().resetD();
-//                    frame.getAppointment().initCreateP();
-//                    frame.getAppointment().revalidate();
-//                    frame.getAppointment().repaint();
-//
-//                    //Create Appointment
-//                    frame.getAppointment().getCreateA().addActionListener(new ActionListener() {
-//                        @Override
-//                        public void actionPerformed(ActionEvent e) {
-//                            int id = Integer.parseInt(frame.getAppointment().getIdT().getText());
-//                            String reason = frame.getAppointment().getReasonT().getText();
-//
-//                            Appointment newApp = new Appointment((appointmentList.getAppList().size() + 1), accountList.getAccountList().get(id - 1), reason);
-//
-//                            appointmentList.getAppList().add(newApp);
-//                        }
-//                    });
-//
-//                    //Open View Panel    
-//                } else if (frame.getAppointment().getView().isSelected()) {
-//                    frame.getAppointment().resetD();
-//                    if (frame.getAppointment().getSearchIDT().getText().equals("")) {
-//                        frame.getAppointment().getSearchIDT().setText("Enter Patient ID Here");
-//                    } else {
-//                        int a = Integer.parseInt(frame.getAppointment().getSearchIDT().getText());
-//                        for (int i = 0; i < appointmentList.getAppList().size(); i++) {
-//                            if (accountList.getAccountList().get(a - 1).equals(appointmentList.getAppList().get(i).getPatient())) {
-//                                frame.getAppointment().initViewP(accountList.getAccountList().get(a - 1), appointmentList.getAppList().get(i));
-//                                frame.getAppointment().revalidate();
-//                                frame.getAppointment().repaint();
-//                            } else {
-//                                frame.getAppointment().getSearchIDT().setText("Try Another Patient");
-//                            }
-//                        }
-//                    }
+        frame.getAppointment().getSelect().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Open Create Panel
+                if (frame.getAppointment().getCreate().isSelected()) {
+                    frame.getAppointment().resetD();
+                    frame.getAppointment().initCreateP();
+                    frame.getAppointment().revalidate();
+                    frame.getAppointment().repaint();
+
+                    //Create Appointment
+                    frame.getAppointment().getCreateA().addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            int id = Integer.parseInt(frame.getAppointment().getIdT().getText());
+                            String reason = frame.getAppointment().getReasonT().getText();
+
+                            Appointment newApp = new Appointment((appointmentList.getAppList().size() + 1), accountList.get(id - 1), reason);
+
+                            appointmentList.getAppList().add(newApp);
+                        }
+                    });
+
+                    //Open View Panel    
+                } else if (frame.getAppointment().getView().isSelected()) {
+                    frame.getAppointment().resetD();
+                    if (frame.getAppointment().getSearchIDT().getText().equals("")) {
+                        frame.getAppointment().getSearchIDT().setText("Enter Patient ID Here");
+                    } else {
+                        int a = Integer.parseInt(frame.getAppointment().getSearchIDT().getText());
+                        for (int i = 0; i < appointmentList.getAppList().size(); i++) {
+                            if (accountList.get(a - 1).equals(appointmentList.getAppList().get(i).getPatient())) {
+                                frame.getAppointment().initViewP(accountList.get(a - 1), appointmentList.getAppList().get(i));
+                                frame.getAppointment().revalidate();
+                                frame.getAppointment().repaint();
+                            } else {
+                                frame.getAppointment().getSearchIDT().setText("Try Another Patient");
+                            }
+                        }
+                    }
 //
 //                    //Open Edit Panel    
-//                } else if (frame.getAppointment().getEdit().isSelected()) {
-//                    frame.getAppointment().resetD();
-//                    if (frame.getAppointment().getSearchIDT().getText().equals("")) {
-//                        frame.getAppointment().getSearchIDT().setText("Enter Patient ID Here");
-//                    } else {
-//                        int a = Integer.parseInt(frame.getAppointment().getSearchIDT().getText());
-//                        for (int i = 0; i < appointmentList.getAppList().size(); i++) {
-//                            if (accountList.getAccountList().get(a - 1).equals(appointmentList.getAppList().get(i).getPatient())) {
-//                                frame.getAppointment().initEditP(accountList.getAccountList().get(a - 1), appointmentList.getAppList().get(i));
-//                                frame.getAppointment().revalidate();
-//                                frame.getAppointment().repaint();
-//                            } else {
-//                                frame.getAppointment().getSearchIDT().setText("Try Another Patient");
-//                            }
-//                        }
-//
-//                        frame.getAppointment().getCreateA().addActionListener(new ActionListener() {
-//                            @Override
-//                            public void actionPerformed(ActionEvent e) {
-//                                for(int i = 0; i < appointmentList.getAppList().size(); i++) {
-//                                    if(appointmentList.getAppList().get(i).getPatient().getPatientId() == a)
-//                                    {
-//                                        appointmentList.getAppList().remove(i);
-//                                    }
-//                                }
-//
-//                                String reason = frame.getAppointment().getReasonT().getText();
-//
-//                                Appointment newApp = new Appointment((appointmentList.getAppList().size() + 1), accountList.getAccountList().get(a - 1), reason);
-//
-//                                appointmentList.getAppList().add(newApp);
-//                            }
-//                        });
-//
-//                    }
-//
-//                }
-//            }
-//
-//        });
+                } else if (frame.getAppointment().getEdit().isSelected()) {
+                    frame.getAppointment().resetD();
+                    if (frame.getAppointment().getSearchIDT().getText().equals("")) {
+                        frame.getAppointment().getSearchIDT().setText("Enter Patient ID Here");
+                    } else {
+                        int a = Integer.parseInt(frame.getAppointment().getSearchIDT().getText());
+                        for (int i = 0; i < appointmentList.getAppList().size(); i++) {
+                            if (accountList.get(a - 1).equals(appointmentList.getAppList().get(i).getPatient())) {
+                                frame.getAppointment().initEditP(accountList.get(a - 1), appointmentList.getAppList().get(i));
+                                frame.getAppointment().revalidate();
+                                frame.getAppointment().repaint();
+                            } else {
+                                frame.getAppointment().getSearchIDT().setText("Try Another Patient");
+                            }
+                        }
+
+                        frame.getAppointment().getCreateA().addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                for(int i = 0; i < appointmentList.getAppList().size(); i++) {
+                                    if(appointmentList.getAppList().get(i).getPatient().getPatientId() == a)
+                                    {
+                                        appointmentList.getAppList().remove(i);
+                                    }
+                                }
+
+                                String reason = frame.getAppointment().getReasonT().getText();
+
+                                Appointment newApp = new Appointment((appointmentList.getAppList().size() + 1), accountList.get(a - 1), reason);
+
+                                appointmentList.getAppList().add(newApp);
+                            }
+                        });
+
+                    }
+
+                }
+            }
+
+        });
 //        
 //        //Open Create/View/Edit Prescription Panels
-//        frame.getPrescription().getSelect().addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                //Open Create Panel
-//                if (frame.getPrescription().getCreate().isSelected()) {
-//                    frame.getPrescription().resetD();
-//                    frame.getPrescription().initCreateP();
-//                    frame.getPrescription().revalidate();
-//                    frame.getPrescription().repaint();
-//
-//                    //Create Appointment
-//                    frame.getPrescription().getCreateP().addActionListener(new ActionListener() {
-//                        @Override
-//                        public void actionPerformed(ActionEvent e) {
-//                            int id = Integer.parseInt(frame.getPrescription().getIdT().getText());
-//                            String reason = frame.getPrescription().getRxT().getText();
-//
-//                            Prescription p = new Prescription((presList.getPresList().size() + 1), accountList.getAccountList().get(id - 1), reason);
-//
-//                            presList.getPresList().add(p);
-//                        }
-//                    });
-//
-//                    //Open View Panel    
-//                } else if (frame.getPrescription().getView().isSelected()) {
-//                    frame.getPrescription().resetD();
-//                    if (frame.getPrescription().getSearchIDT().getText().equals("")) {
-//                        frame.getPrescription().getSearchIDT().setText("Enter Patient ID Here");
-//                    } else {
-//                        int a = Integer.parseInt(frame.getPrescription().getSearchIDT().getText());
-//                        for (int i = 0; i < presList.getPresList().size(); i++) {
-//                            if (accountList.getAccountList().get(a - 1).equals(presList.getPresList().get(i).getPatient())) {
-//                                frame.getPrescription().initViewP(accountList.getAccountList().get(a - 1), presList.getPresList().get(i));
-//                                frame.getPrescription().revalidate();
-//                                frame.getPrescription().repaint();
-//                            } else {
-//                                frame.getPrescription().getSearchIDT().setText("Try Another Patient");
-//                            }
-//                        }
-//                    }
+        frame.getPrescription().getSelect().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Open Create Panel
+                if (frame.getPrescription().getCreate().isSelected()) {
+                    frame.getPrescription().resetD();
+                    frame.getPrescription().initCreateP();
+                    frame.getPrescription().revalidate();
+                    frame.getPrescription().repaint();
+
+                    //Create Appointment
+                    frame.getPrescription().getCreateP().addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            int id = Integer.parseInt(frame.getPrescription().getIdT().getText());
+                            String reason = frame.getPrescription().getRxT().getText();
+
+                            Prescription p = new Prescription((presList.getPresList().size() + 1), accountList.get(id - 1), reason);
+
+                            presList.getPresList().add(p);
+                        }
+                    });
+
+                    //Open View Panel    
+                } else if (frame.getPrescription().getView().isSelected()) {
+                    frame.getPrescription().resetD();
+                    if (frame.getPrescription().getSearchIDT().getText().equals("")) {
+                        frame.getPrescription().getSearchIDT().setText("Enter Patient ID Here");
+                    } else {
+                        int a = Integer.parseInt(frame.getPrescription().getSearchIDT().getText());
+                        for (int i = 0; i < presList.getPresList().size(); i++) {
+                            if (accountList.get(a - 1).equals(presList.getPresList().get(i).getPatient())) {
+                                frame.getPrescription().initViewP(accountList.get(a - 1), presList.getPresList().get(i));
+                                frame.getPrescription().revalidate();
+                                frame.getPrescription().repaint();
+                            } else {
+                                frame.getPrescription().getSearchIDT().setText("Try Another Patient");
+                            }
+                        }
+                    }
 //
 //                    //Open Edit Panel    
-//                } else if (frame.getPrescription().getEdit().isSelected()) {
-//                    frame.getPrescription().resetD();
-//                    if (frame.getPrescription().getSearchIDT().getText().equals("")) {
-//                        frame.getPrescription().getSearchIDT().setText("Enter Patient ID Here");
-//                    } else {
-//                        int a = Integer.parseInt(frame.getPrescription().getSearchIDT().getText());
-//                        for (int i = 0; i < presList.getPresList().size(); i++) {
-//                            if (accountList.getAccountList().get(a - 1).equals(presList.getPresList().get(i).getPatient())) {
-//                                frame.getPrescription().initEditP(accountList.getAccountList().get(a - 1), presList.getPresList().get(i));
-//                                frame.getPrescription().revalidate();
-//                                frame.getPrescription().repaint();
-//                            } else {
-//                                frame.getPrescription().getSearchIDT().setText("Try Another Patient");
-//                            }
-//                        }
-//
-//                        frame.getPrescription().getCreateP().addActionListener(new ActionListener() {
-//                            @Override
-//                            public void actionPerformed(ActionEvent e) {
-//                                for(int i = 0; i < presList.getPresList().size(); i++) {
-//                                    if(presList.getPresList().get(i).getPatient().getPatientId() == a)
-//                                    {
-//                                        presList.getPresList().remove(i);
-//                                    }
-//                                }
-//
-//                                String rx = frame.getPrescription().getRxT().getText();
-//
-//                                Prescription p = new Prescription((presList.getPresList().size() + 1), accountList.getAccountList().get(a - 1), rx);
-//
-//                                presList.getPresList().add(p);
-//                            }
-//                        });
-//
-//                    }
-//
-//                }
-//            }
-//
-//        });
+                } else if (frame.getPrescription().getEdit().isSelected()) {
+                    frame.getPrescription().resetD();
+                    if (frame.getPrescription().getSearchIDT().getText().equals("")) {
+                        frame.getPrescription().getSearchIDT().setText("Enter Patient ID Here");
+                    } else {
+                        int a = Integer.parseInt(frame.getPrescription().getSearchIDT().getText());
+                        for (int i = 0; i < presList.getPresList().size(); i++) {
+                            if (accountList.get(a - 1).equals(presList.getPresList().get(i).getPatient())) {
+                                frame.getPrescription().initEditP(accountList.get(a - 1), presList.getPresList().get(i));
+                                frame.getPrescription().revalidate();
+                                frame.getPrescription().repaint();
+                            } else {
+                                frame.getPrescription().getSearchIDT().setText("Try Another Patient");
+                            }
+                        }
+
+                        frame.getPrescription().getCreateP().addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                for(int i = 0; i < presList.getPresList().size(); i++) {
+                                    if(presList.getPresList().get(i).getPatient().getPatientId() == a)
+                                    {
+                                        presList.getPresList().remove(i);
+                                    }
+                                }
+
+                                String rx = frame.getPrescription().getRxT().getText();
+
+                                Prescription p = new Prescription((presList.getPresList().size() + 1), accountList.get(a - 1), rx);
+
+                                presList.getPresList().add(p);
+                            }
+                        });
+
+                    }
+
+                }
+            }
+
+        });
 
     }
 }
