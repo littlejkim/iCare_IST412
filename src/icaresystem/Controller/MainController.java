@@ -19,6 +19,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -64,15 +65,30 @@ public class MainController {
             }
         });
         
-        // add user to database
+        // add register 
         frame.getHome().getRegister().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String id = frame.getHome().getId().getText();
-                String password = new String(frame.getHome().getPassword().getPassword());
-                Account newac = new Account(1, id, password);
-  
                 ArrayList<Account> list = accountList;
+                //check for account name 
+                ArrayList<String> accountExists = new ArrayList<>();
+                for (Account d: list)
+                {
+                    accountExists.add(d.getId());
+                }
+                
+                if(accountExists.contains(id))
+                {
+                    JOptionPane.showMessageDialog(null, "Account name already exists. Please choose another.");
+                    frame.getHome().getId().setText("");
+                }
+                else
+                {
+                  String password = new String(frame.getHome().getPassword().getPassword());
+                Account newac = new Account(list.size() + 1, id, password);
+                
+                
                 list.add(newac);
                 try {
                     FileOutputStream fileOut = new FileOutputStream("info.ser");
@@ -86,7 +102,10 @@ public class MainController {
                     frame.getHome().getLoggedOn().setText("User registration complete");
                 } catch (IOException i) {
                     i.printStackTrace();
+                }  
                 }
+                    
+                
             }
             
         });
