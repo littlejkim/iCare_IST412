@@ -1,7 +1,6 @@
 Run App in default packagae
 
-username: littlejkim
-password: 4johnkim
+If this is your first time running, please create your username and password. 
 
 
 Design pattern interface (Navigation): implemented through JTabbedPane

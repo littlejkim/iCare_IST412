@@ -7,12 +7,21 @@
 import icaresystem.Controller.MainController;
 import icaresystem.Model.*;
 import icaresystem.View.*;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author Terry
  */
 public class App {
      public static void main(String[] args) {
-         MainController mc = new MainController("iCare");
+         try {
+             MainController mc = new MainController("iCare");
+         } catch (IOException ex) {
+             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+         } catch (ClassNotFoundException ex) {
+             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+         }
     }
 }

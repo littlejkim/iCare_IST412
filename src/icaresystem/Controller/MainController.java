@@ -108,7 +108,7 @@ public class MainController {
                 }
                 else
                 {
-                  String password = new String(frame.getHome().getPassword().getPassword());
+                String password = new String(frame.getHome().getPassword().getPassword());
                 Account newac = new Account(list.size() + 1, id, password);
                 
                 
