@@ -64,13 +64,25 @@ public class MainController {
                 String userName = frame.getHome().getId().getText();
                 String password = new String( frame.getHome().getPassword().getPassword());
                 
+                    try
+                    {
                     if(login.get(userName).equals(password)) {
                         frame.getHome().getLoggedOn().setText("User is logged on");
                         frame.enableTabs(true);
+                        JOptionPane.showMessageDialog(frame.getFrame(), "Log in Successful");
+                        frame.getHome().getSubmit().setEnabled(false);
+                        frame.getHome().getSubmit().setText("Logged in");
+                        frame.getHome().getRegister().setEnabled(false);
                     } else {
                         frame.getHome().getLoggedOn().setText("ID or Password is incorrect");
                         frame.enableTabs(false);
+                        JOptionPane.showMessageDialog(frame.getFrame(),"Username and/or password do not match iCare system records");
                     }
+                    }
+                    catch(Exception E)
+                    {
+                        JOptionPane.showMessageDialog(frame.getFrame(), "Credintals do not match our records");
+                    }    
                     
                 
             }
@@ -91,7 +103,7 @@ public class MainController {
                 
                 if(accountExists.contains(id))
                 {
-                    JOptionPane.showMessageDialog(null, "Account name already exists. Please choose another.");
+                    JOptionPane.showMessageDialog(frame.getFrame(), "Account name already exists. Please choose another.");
                     frame.getHome().getId().setText("");
                 }
                 else
