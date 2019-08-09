@@ -21,11 +21,13 @@ public class HomePanel extends JPanel {
     private JPasswordField password;
     private JButton submit;
     private JLabel loggedOn;
+    private JButton register;
     public HomePanel() {
         id = new JTextField(10);
         password = new JPasswordField(10);
-        submit = new JButton("Submit");
+        submit = new JButton("Log on");
         loggedOn = new JLabel("used not logged on");;
+        register = new JButton("Register");
         this.add(new JLabel("Home"));
         this.add(new JLabel("ID"));
         this.add(id);
@@ -33,6 +35,7 @@ public class HomePanel extends JPanel {
         this.add(password);
         this.add(submit);
         this.add(loggedOn);
+        this.add(register);
     }
 
     
@@ -91,6 +94,20 @@ public class HomePanel extends JPanel {
      */
     public void setLoggedOn(JLabel loggedOn) {
         this.loggedOn = loggedOn;
+    }
+
+    /**
+     * @return the register
+     */
+    public JButton getRegister() {
+        return register;
+    }
+
+    /**
+     * @param register the register to set
+     */
+    public void setRegister(JButton register) {
+        this.register = register;
     }
     
     

@@ -95,7 +95,7 @@ public class PrescriptionPanel extends JPanel {
         setIdL(new JLabel("Patient Name: "));
         setRxL(new JLabel("Reason For Appointment: "));
         
-        setIdT(new JTextField(a.getPatientFullName()));
+        setIdT(new JTextField(a.getId()));
         setRxT(new JTextField(b.getRX()));
         
         topP.add(getIdL());

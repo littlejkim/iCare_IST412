@@ -95,7 +95,7 @@ public class AppointmentPanel extends JPanel {
         setIdL(new JLabel("Patient Name: "));
         setReasonL(new JLabel("Reason For Appointment: "));
         
-        setIdT(new JTextField(a.getPatientFullName()));
+        setIdT(new JTextField(a.getId()));
         setReasonT(new JTextField(b.getAppointmentDescription()));
         
         topP.add(getIdL());
