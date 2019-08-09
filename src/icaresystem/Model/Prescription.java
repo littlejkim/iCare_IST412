@@ -11,26 +11,16 @@ package icaresystem.Model;
  */
 public class Prescription {
     
-    private String display;
+    private int presNum;
     private Account patient;
-    private long RX;
+    private String RX;
 
-    public Prescription(String display, Account patient, long RX) {
-        this.display = display;
+    public Prescription(int num, Account patient, String RX) {
+        this.presNum = num;
         this.patient = patient;
         this.RX = RX;
     }
 
-    public String getDisplay() {
-            /**
-     * view Prescription information
-     */
-        return display;
-    }
-
-    public void setDisplay(String display) {
-        this.display = display;
-    }
 
     public Account getPatient() {
         return patient;
@@ -40,11 +30,31 @@ public class Prescription {
         this.patient = patient;
     }
 
-    public long getRX() {
+    /**
+     * @return the presNum
+     */
+    public int getPresNum() {
+        return presNum;
+    }
+
+    /**
+     * @param presNum the presNum to set
+     */
+    public void setPresNum(int presNum) {
+        this.presNum = presNum;
+    }
+
+    /**
+     * @return the RX
+     */
+    public String getRX() {
         return RX;
     }
 
-    public void setRX(long RX) {
+    /**
+     * @param RX the RX to set
+     */
+    public void setRX(String RX) {
         this.RX = RX;
     }
     

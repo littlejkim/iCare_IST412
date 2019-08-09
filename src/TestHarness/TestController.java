@@ -55,7 +55,7 @@ public class TestController {
     public void runTests() {
             testView.getTestFeedbackPane().setText("");
             AccountClassTests();
-            AppointmentClassTests();
+            //AppointmentClassTests();
             HistoryClassTests();
             InsuranceClassTests();
             PrescriptionClassTests();
@@ -292,9 +292,7 @@ public class TestController {
         testView.getTestFeedbackPane().setText(testMsg + "End of Account class tests \n");
     }
     
-    /**
-     *
-     */
+    /*
     public void AppointmentClassTests(){
     String testMsg = testView.getTestFeedbackPane().getText();
     testView.getTestFeedbackPane().setText(testMsg + "\nBeginning Appointment class tests");
@@ -339,7 +337,7 @@ public class TestController {
      testView.getTestFeedbackPane().setText(testMsg + "End of class tests");
     
     }
-    
+    */
 
     public void HistoryClassTests(){
     String testMsg = testView.getTestFeedbackPane().getText();
