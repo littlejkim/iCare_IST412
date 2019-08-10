@@ -32,9 +32,9 @@ public class AppointmentTest {
      */
     @Test
     public void testRequestCheckup() {
-        System.out.println("requestCheckup");
-        Appointment instance = new Appointment();
-        instance.requestCheckup();
+//        System.out.println("requestCheckup");
+//        Appointment instance = new Appointment();
+//        instance.requestCheckup();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -44,11 +44,11 @@ public class AppointmentTest {
      */
     @Test
     public void testGetAppointment() {
-        System.out.println("getAppointment");
-        Appointment instance = new Appointment();
-        int expResult = 0;
-        int result = instance.getAppointment();
-        assertEquals(expResult, result);
+//        System.out.println("getAppointment");
+//        Appointment instance = new Appointment();
+//        int expResult = 0;
+//        int result = instance.getAppointment();
+//        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -58,10 +58,10 @@ public class AppointmentTest {
      */
     @Test
     public void testSetAppointment() {
-        System.out.println("setAppointment");
-        int appointment = 0;
-        Appointment instance = new Appointment();
-        instance.setAppointment(appointment);
+//        System.out.println("setAppointment");
+//        int appointment = 0;
+//        Appointment instance = new Appointment();
+//        instance.setAppointment(appointment);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -71,11 +71,11 @@ public class AppointmentTest {
      */
     @Test
     public void testGetPatient() {
-        System.out.println("getPatient");
-        Appointment instance = new Appointment();
-        Account expResult = null;
-        Account result = instance.getPatient();
-        assertEquals(expResult, result);
+//        System.out.println("getPatient");
+//        Appointment instance = new Appointment();
+//        Account expResult = null;
+//        Account result = instance.getPatient();
+//        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -85,10 +85,10 @@ public class AppointmentTest {
      */
     @Test
     public void testSetPatient() {
-        System.out.println("setPatient");
-        Account patient = null;
-        Appointment instance = new Appointment();
-        instance.setPatient(patient);
+//        System.out.println("setPatient");
+//        Account patient = null;
+//        Appointment instance = new Appointment();
+//        instance.setPatient(patient);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -99,10 +99,10 @@ public class AppointmentTest {
     @Test
     public void testGetAppointmentDescription() {
         System.out.println("getAppointmentDescription");
-        Appointment instance = new Appointment();
-        String expResult = "";
-        String result = instance.getAppointmentDescription();
-        assertEquals(expResult, result);
+//        Appointment instance = new Appointment();
+//        String expResult = "";
+//        String result = instance.getAppointmentDescription();
+//        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -112,10 +112,10 @@ public class AppointmentTest {
      */
     @Test
     public void testSetAppointmentDescription() {
-        System.out.println("setAppointmentDescription");
-        String appointmentDescription = "";
-        Appointment instance = new Appointment();
-        instance.setAppointmentDescription(appointmentDescription);
+//        System.out.println("setAppointmentDescription");
+//        String appointmentDescription = "";
+//        Appointment instance = new Appointment();
+//        instance.setAppointmentDescription(appointmentDescription);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
